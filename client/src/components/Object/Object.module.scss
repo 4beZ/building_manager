@@ -1,0 +1,58 @@
+@import "../../scss/variables.scss";
+
+.object {
+  color: $mainTextColor;
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  background-color: $mainBackgroundColor;
+  height: 400px;
+  margin-bottom: 30px;
+  border-radius: 50px;
+  -webkit-box-shadow: 0px 0px 37px 4px rgba(34, 60, 80, 0.22);
+  -moz-box-shadow: 0px 0px 37px 4px rgba(34, 60, 80, 0.22);
+  box-shadow: 0px 0px 37px 4px rgba(34, 60, 80, 0.22);
+  overflow: hidden;
+
+  &:first-child {
+    margin-top: 30px;
+  }
+
+  p {
+    margin: 0;
+    margin-left: 2%;
+    margin-top: 1%;
+  }
+
+  p:first-child {
+    font-size: 1.6em;
+    font-weight: 900;
+    padding-bottom: 5px;
+    border-bottom: 2px solid lighten($mainTextColor, 60%);
+    width: 90%;
+  }
+}
+
+.image {
+  overflow: hidden;
+  width: 30%;
+  height: 100%;
+  border-radius: 40px 0 0 40px;
+  img {
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+}
+.info {
+  width: 60%;
+  height: 100%;
+}
+.options {
+  background-color: rgb(255, 125, 3);
+  width: 10%;
+  height: 100%;
+  border-radius: 0 40px 40px 0;
+}

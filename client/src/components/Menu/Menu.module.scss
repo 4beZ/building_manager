@@ -1,0 +1,61 @@
+@import "../../scss/variables";
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: $mainBackgroundColor;
+  height: 100vh;
+  width: 20%;
+  font-weight: 900;
+  font-size: 2em;
+  -webkit-box-shadow: 14px 0px 25px 0px rgba(34, 60, 80, 0.2);
+  -moz-box-shadow: 14px 0px 25px 0px rgba(34, 60, 80, 0.2);
+  box-shadow: 14px 0px 25px 0px rgba(34, 60, 80, 0.2);
+  z-index: 999;
+  overflow: hidden;
+
+  p {
+    margin: 0 auto;
+    padding: 10px 20px;
+    text-align: center;
+    -webkit-box-shadow: 0px 0px 9px 4px rgba(34, 60, 80, 0.11);
+    -moz-box-shadow: 0px 0px 9px 4px rgba(34, 60, 80, 0.11);
+    box-shadow: 0px 0px 9px 4px rgba(34, 60, 80, 0.11);
+    border-radius: 50px;
+  }
+
+  a:first-child {
+    width: auto;
+    margin: 40px 0;
+  }
+
+  a {
+    width: 100%;
+
+    text-decoration: none;
+    color: $mainTextColor;
+    &:active {
+      color: $mainTextColor;
+    }
+  }
+
+  .link {
+    user-select: none;
+    cursor: pointer;
+    padding: 20px 0;
+    width: 100%;
+    text-align: center;
+    border-bottom: 2px solid $mainTextColor;
+    transition: all 200ms ease;
+
+    &:hover {
+      -webkit-box-shadow: 0px 0px 9px 4px rgba(34, 60, 80, 0.3) inset;
+      -moz-box-shadow: 0px 0px 9px 4px rgba(34, 60, 80, 0.3) inset;
+      box-shadow: 0px 0px 9px 4px rgba(0, 0, 0, 0.3) inset;
+      color: $mainBackgroundColor;
+      background-color: lighten($mainTextColor, $amount: 20%);
+      transition: all 200ms ease;
+    }
+  }
+}

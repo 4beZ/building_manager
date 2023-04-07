@@ -1,0 +1,63 @@
+@import "../../scss/variables.scss";
+
+.objects {
+  width: 70%;
+  height: auto;
+}
+
+.loading {
+  align-self: center;
+}
+
+.options {
+  background-color: $mainBackgroundColor;
+  height: 100px;
+  border-radius: 50px;
+  -webkit-box-shadow: 0px 0px 37px 4px rgba(34, 60, 80, 0.22);
+  -moz-box-shadow: 0px 0px 37px 4px rgba(34, 60, 80, 0.22);
+  box-shadow: 0px 0px 37px 4px rgba(34, 60, 80, 0.22);
+  margin: 30px 0;
+  overflow: hidden;
+
+  > div:first-child {
+    // background-color: aqua;
+    float: left;
+    width: 70%;
+    height: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+
+    input {
+      margin-left: 40px;
+      height: 60%;
+      width: 80%;
+      font-size: 1.6em;
+      background: rgba(34, 60, 80, 0);
+      border: none;
+      border-bottom: 2px solid lighten($mainTextColor, 60%);
+      &:focus-visible {
+        outline: none;
+      }
+      &::placeholder {
+        color: $mainTextColor;
+        opacity: 60%;
+      }
+    }
+  }
+
+  > div:last-child {
+    float: right;
+    // background-color: aqua;
+    height: 100%;
+    width: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+
+    svg:hover {
+      cursor: pointer;
+    }
+  }
+}
