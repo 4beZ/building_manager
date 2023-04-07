@@ -2,11 +2,10 @@ import { createContext } from "react"
 
 const noop = () => {}
 
-export const AuthContext = createContext({
+export const Context = createContext({
   token: null,
   userId: null,
   login: noop,
   logout: noop,
   isAuthenticated: false,
-  serverUrl: "http://localhost:5000",
 })

@@ -5,8 +5,15 @@ import Object from "../Object/Object"
 import { VscListSelection } from "react-icons/vsc"
 
 const ObjectsPage = () => {
+  const [searchValue, setsearchValue] = useState("")
   const [objects, setobjects] = useState([])
+  const [sortWindow, setsortWindow] = useState(false)
   const { loading, error, request } = useHttp()
+
+  const toggleSortWindow = () => {
+    setsortWindow((s) => !s)
+    console.log(sortWindow)
+  }
 
   const getObjects = useCallback(async () => {
     try {
@@ -30,15 +37,28 @@ const ObjectsPage = () => {
         <div className={styles.objects}>
           <div className={styles.options}>
             <div>
-              <input placeholder='Search' />
+              <input
+                placeholder='Search'
+                value={searchValue}
+                onChange={(e) => setsearchValue(e.target.value)}
+              />
             </div>
             <div>
-              <VscListSelection />
+              <VscListSelection onClick={toggleSortWindow} />
             </div>
+            {sortWindow && (
+              <div className={styles.sort}>
+                <div>1</div>
+                <div>2</div>
+                <div>3</div>
+              </div>
+            )}
           </div>
-          {objects.map((object) => (
-            <Object object={object} key={object.id} />
-          ))}
+          {objects
+            .filter((obj) => obj.name.toLowerCase().includes(searchValue))
+            .map((object) => (
+              <Object object={object} key={object.id} />
+            ))}
         </div>
       )}
     </>

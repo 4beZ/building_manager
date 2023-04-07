@@ -1,8 +1,8 @@
 import { useState, useCallback, useContext } from "react"
-import { AuthContext } from "../context/Context"
+import { Context } from "../context/Context"
 
 export const useHttp = () => {
-  const { token } = useContext(AuthContext)
+  const { token } = useContext(Context)
   const [loading, setloading] = useState(false)
   const [error, setError] = useState(null)
   const request = useCallback(

@@ -14,11 +14,14 @@ const Menu = () => {
           {title}
         </p>
       </Link>
+      <NavLink to='/' className={styles.link}>
+        <div>Objects</div>
+      </NavLink>
       <NavLink to='/create' className={styles.link}>
         <div>Create Object</div>
       </NavLink>
-      <NavLink to='/' className={styles.link}>
-        <div>Link</div>
+      <NavLink to='/about' className={styles.link}>
+        <div>About</div>
       </NavLink>
     </div>
   )

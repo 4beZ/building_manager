@@ -1,0 +1,57 @@
+@import "../../scss/variables.scss";
+@import "../../scss/mixins.scss";
+
+.main {
+  width: 100%;
+  height: 100vh;
+  @include flexCenter;
+}
+
+.win {
+  color: $mainTextColor;
+  width: 500px;
+  height: 500px;
+  background-color: $mainBackgroundColor;
+  @include shadow;
+  border-radius: 50px;
+
+  > div {
+    @include flexCenter;
+    height: 20%;
+    @include inputStyling;
+    input::placeholder {
+      text-align: center;
+    }
+  }
+
+  > div:nth-child(1) {
+    user-select: none;
+    font-size: 2em;
+    font-weight: 900;
+  }
+  > div:last-child {
+    height: 40%;
+    button {
+      cursor: pointer;
+      font-size: 2em;
+      font-weight: 900;
+      background-color: antiquewhite;
+      border: none;
+      border-radius: 20px;
+      width: 60%;
+      height: 30%;
+      @include shadow;
+      transition: all 200ms ease;
+
+      &:hover {
+        transform: scale(1.1);
+        transition: all 200ms ease;
+      }
+
+      &:active {
+        background-color: lighten($mainTextColor, $amount: 20%);
+        color: $mainBackgroundColor;
+      }
+    }
+  }
+}

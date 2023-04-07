@@ -1,0 +1,29 @@
+@mixin shadow {
+  -webkit-box-shadow: 0px 0px 31px 4px rgba(34, 60, 80, 0.22);
+  -moz-box-shadow: 0px 0px 31px 4px rgba(34, 60, 80, 0.22);
+  box-shadow: 0px 0px 31px 4px rgba(34, 60, 80, 0.22);
+}
+
+@mixin flexCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin inputStyling($h: 60%, $w: 80%) {
+  input {
+    height: $h;
+    width: $w;
+    font-size: 1.6em;
+    background: rgba(34, 60, 80, 0);
+    border: none;
+    border-bottom: 2px solid lighten($mainTextColor, 60%);
+    &:focus-visible {
+      outline: none;
+    }
+    &::placeholder {
+      color: $mainTextColor;
+      opacity: 60%;
+    }
+  }
+}
