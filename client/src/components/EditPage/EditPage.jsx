@@ -10,6 +10,7 @@ const EditPage = () => {
       initialObject={testObject}
       initialWorkProcess={testWorkProcess}
       title='Edit'
+      edit={true}
     />
   )
 }

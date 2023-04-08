@@ -13,7 +13,7 @@ export const testWorkProcess = {
   problemType: "big problem",
   solutionType: "very hard solution",
   dateAppear: "2023-01-01",
-  solutionTerm: "try hard",
+  solutionTerm: "123",
   solutionDateNominal: "2023-01-02",
   solutionDateFact: "2024-01-02",
   workGroup: ["Alex", "Dima", "Tyoma", "Alex2"],

@@ -27,7 +27,6 @@ const Object = ({ object: { name, address, phone, company, id } }) => {
             <TbListDetails />
           </Link>
         </div>
-
         <div>
           {isAdmin && (
             <Link to={`/edit/${id}`}>
@@ -35,6 +34,7 @@ const Object = ({ object: { name, address, phone, company, id } }) => {
             </Link>
           )}
         </div>
+        <div></div>
         <div></div>
         <div>
           <div></div>

@@ -26,6 +26,7 @@ const CreatePage = ({
   },
   apiUrl = "",
   title = "Create",
+  edit = false,
 }) => {
   const [objectForm, setobjectForm] = useState(initialObject)
   const [workProcess, setworkProcess] = useState(initialWorkProcess)
@@ -79,9 +80,14 @@ const CreatePage = ({
           )}
         </div>
 
-        <div className={styles.buttonDiv}>
+        <div className={styles.commitButton}>
           <button>Commit</button>
         </div>
+        {edit && (
+          <div className={styles.deleteButton}>
+            <button>Delete</button>
+          </div>
+        )}
       </div>
       <div>
         <b>Object</b>
@@ -121,6 +127,13 @@ const CreatePage = ({
             onChange={handleObjectFormChange}
             value={objectForm.square}
           />
+          <InputDiv
+            title='Owner'
+            type='text'
+            name='owner'
+            onChange={handleObjectFormChange}
+            value={objectForm.owner}
+          />
         </>
         <b>Work Process</b>
         <>
@@ -138,10 +151,9 @@ const CreatePage = ({
             onChange={handleWorkFormChange}
             value={workProcess.solutionType}
           />
-
           <InputDiv
-            title='Solution Term'
-            type='text'
+            title='Solution Term (days)'
+            type='number'
             name='solutionTerm'
             onChange={handleWorkFormChange}
             value={workProcess.solutionTerm}

@@ -40,12 +40,17 @@
   }
 }
 
-@mixin buttonStyling($h: 30%, $w: 60%) {
+@mixin buttonStyling(
+  $h: 30%,
+  $w: 60%,
+  $cActive: lighten($mainTextColor, $amount: 20%),
+  $c: antiquewhite
+) {
   button {
     cursor: pointer;
     font-size: 2em;
     font-weight: 900;
-    background-color: antiquewhite;
+    background-color: $c;
     border: none;
     border-radius: 20px;
     width: $w;
@@ -59,7 +64,7 @@
     }
 
     &:active {
-      background-color: lighten($mainTextColor, $amount: 20%);
+      background-color: $cActive;
       color: $mainBackgroundColor;
     }
   }
