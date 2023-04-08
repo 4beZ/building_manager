@@ -4,10 +4,10 @@ import { BrowserRouter } from "react-router-dom"
 import { Context } from "../../context/Context"
 
 function App() {
-  const routes = userRoutes(true, false)
+  const routes = userRoutes(true, true)
 
   return (
-    <Context.Provider value={{ token: "asdsad" }}>
+    <Context.Provider value={{ token: "asdsad", isAdmin: true }}>
       <BrowserRouter>
         <div className='App'>{routes}</div>
       </BrowserRouter>

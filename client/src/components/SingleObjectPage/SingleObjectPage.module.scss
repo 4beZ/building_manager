@@ -1,0 +1,12 @@
+@import "../../scss/variables.scss";
+@import "../../scss/mixins.scss";
+
+.main {
+  align-self: center;
+  width: 80%;
+  height: 90%;
+  background-color: $mainBackgroundColor;
+  @include shadow;
+  border-radius: 50px;
+  @include flexCenter;
+}

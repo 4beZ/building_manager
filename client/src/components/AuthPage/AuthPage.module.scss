@@ -31,27 +31,6 @@
   }
   > div:last-child {
     height: 40%;
-    button {
-      cursor: pointer;
-      font-size: 2em;
-      font-weight: 900;
-      background-color: antiquewhite;
-      border: none;
-      border-radius: 20px;
-      width: 60%;
-      height: 30%;
-      @include shadow;
-      transition: all 200ms ease;
-
-      &:hover {
-        transform: scale(1.1);
-        transition: all 200ms ease;
-      }
-
-      &:active {
-        background-color: lighten($mainTextColor, $amount: 20%);
-        color: $mainBackgroundColor;
-      }
-    }
+    @include buttonStyling;
   }
 }

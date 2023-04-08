@@ -5,15 +5,18 @@ import Layout from "./components/Layout/Layout"
 import ObjectsPage from "./components/ObjectsPage/ObjectsPage"
 import AboutPage from "./components/AboutPage/AboutPage"
 import SingleObjectPage from "./components/SingleObjectPage/SingleObjectPage"
+import EditPage from "./components/EditPage/EditPage"
 
 export const userRoutes = (isAuth, isAdmin) => {
   if (isAdmin) {
     return (
       <Routes>
         <Route path='/' element={<Layout />}>
+          <Route index element={<ObjectsPage />} />
           <Route path='/create' element={<CreatePage />} />
           <Route path='/object/:id' element={<SingleObjectPage />} />
-          <Route index element={<ObjectsPage />} />
+          <Route path='/edit/:id' element={<EditPage />} />
+          <Route path='/about' element={<AboutPage />} />
           <Route path='*' element={<Navigate to='/' replace />} />
         </Route>
       </Routes>

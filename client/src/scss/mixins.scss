@@ -27,3 +27,40 @@
     }
   }
 }
+
+@mixin iconZoom {
+  svg {
+    transition: all 200ms ease;
+  }
+
+  svg:hover {
+    cursor: pointer;
+    transform: scale(1.2);
+    transition: all 200ms ease;
+  }
+}
+
+@mixin buttonStyling($h: 30%, $w: 60%) {
+  button {
+    cursor: pointer;
+    font-size: 2em;
+    font-weight: 900;
+    background-color: antiquewhite;
+    border: none;
+    border-radius: 20px;
+    width: $w;
+    height: $h;
+    @include shadow;
+    transition: all 200ms ease;
+
+    &:hover {
+      transform: scale(1.1);
+      transition: all 200ms ease;
+    }
+
+    &:active {
+      background-color: lighten($mainTextColor, $amount: 20%);
+      color: $mainBackgroundColor;
+    }
+  }
+}

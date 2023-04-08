@@ -8,18 +8,16 @@ const ObjectsPage = () => {
   const [searchValue, setsearchValue] = useState("")
   const [objects, setobjects] = useState([])
   const [sortWindow, setsortWindow] = useState(false)
-  const { loading, error, request } = useHttp()
+  const { loading, request } = useHttp()
 
   const toggleSortWindow = () => {
     setsortWindow((s) => !s)
-    console.log(sortWindow)
   }
 
   const getObjects = useCallback(async () => {
     try {
       const data = await request("https://jsonplaceholder.typicode.com/users")
       setobjects(data)
-      console.log(data)
     } catch (e) {
       console.error(e)
     }

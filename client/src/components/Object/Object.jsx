@@ -1,8 +1,13 @@
-import React from "react"
+import { useContext } from "react"
 import styles from "./Object.module.scss"
 import houseImage from "../../images/house.jpg"
+import { TbListDetails, TbBallpen } from "react-icons/tb"
+import { Link } from "react-router-dom"
+import { Context } from "../../context/Context"
 
-const Object = ({ object: { name, address, phone, company } }) => {
+const Object = ({ object: { name, address, phone, company, id } }) => {
+  const { isAdmin } = useContext(Context)
+
   return (
     <div className={styles.object}>
       <div className={styles.image}>
@@ -16,7 +21,25 @@ const Object = ({ object: { name, address, phone, company } }) => {
         <p>Phone: {phone}</p>
         <p>Company: {company.name}</p>
       </div>
-      <div className={styles.options}></div>
+      <div className={styles.options}>
+        <div>
+          <Link to={`/object/${id}`}>
+            <TbListDetails />
+          </Link>
+        </div>
+
+        <div>
+          {isAdmin && (
+            <Link to={`/edit/${id}`}>
+              <TbBallpen />
+            </Link>
+          )}
+        </div>
+        <div></div>
+        <div>
+          <div></div>
+        </div>
+      </div>
     </div>
   )
 }

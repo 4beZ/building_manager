@@ -8,4 +8,5 @@ export const Context = createContext({
   login: noop,
   logout: noop,
   isAuthenticated: false,
+  isAdmin: false,
 })

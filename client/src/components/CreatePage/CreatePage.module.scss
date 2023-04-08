@@ -1,0 +1,127 @@
+@import "../../scss/variables.scss";
+@import "../../scss/mixins.scss";
+
+.main {
+  overflow-y: scroll;
+  padding-bottom: 20px;
+  overflow: hidden;
+  align-self: center;
+  width: 80%;
+  height: auto;
+  background-color: $mainBackgroundColor;
+  @include shadow;
+  border-radius: 50px;
+  @include flexCenter;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+
+  > div {
+    color: $mainTextColor;
+    height: 100%;
+    padding-left: 20px;
+    b {
+      float: left;
+      display: block;
+      width: 100%;
+      user-select: none;
+      text-align: center;
+      margin: 0;
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      margin-top: 20px;
+    }
+    p {
+      font-size: 1.2em;
+      margin: 0;
+    }
+    &:nth-child(1) {
+      @include buttonStyling(40px, 200px);
+
+      button {
+        font-size: 1em;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+      }
+
+      @include iconZoom;
+      //image adding div
+      div:first-of-type {
+        @include flexCenter;
+        @include iconZoom;
+
+        cursor: pointer;
+        width: 100%;
+        border-radius: 30px;
+        border: 4px dashed $mainBackgroundColor;
+        background-color: rgba(0, 0, 0, 0.607);
+        height: 400px;
+        transition: all 200ms ease;
+
+        svg {
+          color: $mainBackgroundColor;
+          font-size: 3em;
+        }
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.757);
+          transition: all 200ms ease;
+        }
+      }
+
+      p {
+        float: left;
+        width: 100%;
+        text-align: center;
+      }
+      width: 40%;
+    }
+    &:nth-child(2) {
+      > div {
+        margin-right: 30px;
+        float: left;
+        @include inputStyling(30px, 200px);
+        margin-top: 10px;
+        input {
+          font-size: 1em;
+        }
+      }
+      align-self: flex-start;
+      width: 60%;
+
+      @include buttonStyling(30px, 200px);
+      button {
+        margin-top: 10px;
+        float: left;
+        font-weight: 300;
+        font-size: 1em;
+      }
+    }
+  }
+}
+
+.worker {
+  width: 200px;
+}
+
+.removeIcon {
+  margin-left: 10px;
+  margin-top: 10px;
+  font-size: 0.8em;
+  height: 100%;
+}
+
+.buttonDiv {
+  float: left;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.workersDiv {
+  background-color: lighten($mainBackgroundColor, 60%);
+  border: 2px solid lighten($mainTextColor, 50);
+  float: left;
+  width: 100%;
+  border-radius: 50px;
+  padding: 10px 0;
+}
