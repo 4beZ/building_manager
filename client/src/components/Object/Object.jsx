@@ -5,7 +5,7 @@ import { TbListDetails, TbBallpen } from "react-icons/tb"
 import { Link } from "react-router-dom"
 import { Context } from "../../context/Context"
 
-const Object = ({ object: { name, address, phone, company, id } }) => {
+const Object = () => {
   const { isAdmin } = useContext(Context)
 
   return (
@@ -14,25 +14,25 @@ const Object = ({ object: { name, address, phone, company, id } }) => {
         <img src={houseImage} alt='objectImage' />
       </div>
       <div className={styles.info}>
-        <p>{name}</p>
+        {/* <p>{name}</p>
         <p>
           Address: {address.city}, {address.street}
         </p>
         <p>Phone: {phone}</p>
-        <p>Company: {company.name}</p>
+        <p>Company: {company.name}</p> */}
       </div>
       <div className={styles.options}>
         <div>
-          <Link to={`/object/${id}`}>
+          {/* <Link to={`/object/${id}`}>
             <TbListDetails />
-          </Link>
+          </Link> */}
         </div>
         <div>
-          {isAdmin && (
+          {/* {isAdmin && (
             <Link to={`/edit/${id}`}>
               <TbBallpen />
             </Link>
-          )}
+          )} */}
         </div>
         <div></div>
         <div></div>

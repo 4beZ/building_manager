@@ -5,7 +5,7 @@ import { Context } from "../../context/Context"
 
 const Menu = () => {
   const [title, settitle] = useState("OM")
-  const { isAdmin } = useContext(Context)
+  const { isAdmin, logout } = useContext(Context)
 
   return (
     <div className={styles.menu}>
@@ -27,7 +27,7 @@ const Menu = () => {
       <NavLink to='/about' className={styles.link}>
         <div>About</div>
       </NavLink>
-      <button>Logout</button>
+      <button onClick={logout}>Logout</button>
     </div>
   )
 }

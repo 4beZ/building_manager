@@ -5,7 +5,7 @@ const storageName = "userData"
 export const useAuth = () => {
   const [token, setToken] = useState(null)
   const [userId, setUserId] = useState(null)
-  const [isAdmin, setisAdmin] = useState(second)
+  const [isAdmin, setisAdmin] = useState(false)
 
   const login = useCallback((jwtToken, id, isAdmin) => {
     setisAdmin(isAdmin)

@@ -3,6 +3,7 @@ import styles from "./CreatePage.module.scss"
 import { AiOutlineCamera } from "react-icons/ai"
 import { MdOutlineClose } from "react-icons/md"
 import InputDiv from "../InputDiv/InputDiv"
+import { useHttp } from "../../hooks/http.hook"
 
 const CreatePage = ({
   initialObject = {
@@ -28,6 +29,7 @@ const CreatePage = ({
   title = "Create",
   edit = false,
 }) => {
+  const { loading, error, request, clearError } = useHttp()
   const [objectForm, setobjectForm] = useState(initialObject)
   const [workProcess, setworkProcess] = useState(initialWorkProcess)
   const [worker, setworker] = useState("")
@@ -38,15 +40,17 @@ const CreatePage = ({
 
   const handleWorkFormChange = (e) => {
     setworkProcess({ ...workProcess, [e.target.name]: e.target.value })
-    console.log(workProcess)
   }
 
-  const addWorker = () => {
-    setworkProcess({
-      ...workProcess,
-      workGroup: [...workProcess.workGroup, worker],
-    })
-    setworker("")
+  const addWorker = async () => {
+    try {
+      const { userId } = await request(`api/users/${worker}`)
+      setworkProcess({
+        ...workProcess,
+        workGroup: [...workProcess.workGroup, userId],
+      })
+      setworker("")
+    } catch (e) {}
   }
 
   const removeWorker = (worker) => {
@@ -54,6 +58,15 @@ const CreatePage = ({
       ...workProcess,
       workGroup: workProcess.workGroup.filter((w) => w !== worker),
     })
+  }
+
+  const commitObject = async () => {
+    try {
+      const data = await request(`api/objects`, "POST", {
+        object: { ...objectForm, workProcess: workProcess },
+      })
+      console.log(data)
+    } catch (e) {}
   }
 
   return (
@@ -80,7 +93,7 @@ const CreatePage = ({
           )}
         </div>
 
-        <div className={styles.commitButton}>
+        <div className={styles.commitButton} onClick={commitObject}>
           <button>Commit</button>
         </div>
         {edit && (

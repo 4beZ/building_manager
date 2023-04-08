@@ -16,7 +16,8 @@ const ObjectsPage = () => {
 
   const getObjects = useCallback(async () => {
     try {
-      const data = await request("https://jsonplaceholder.typicode.com/users")
+      const data = await request("/api/objects")
+      console.log(data)
       setobjects(data)
     } catch (e) {
       console.error(e)
@@ -52,11 +53,13 @@ const ObjectsPage = () => {
               </div>
             )}
           </div>
-          {objects
+          <Object />
+          {/* {objects
             .filter((obj) => obj.name.toLowerCase().includes(searchValue))
             .map((object) => (
-              <Object object={object} key={object.id} />
-            ))}
+              <Object object={object} key={object._id} />
+              // <p>{object.name}</p>
+            ))} */}
         </div>
       )}
     </>
