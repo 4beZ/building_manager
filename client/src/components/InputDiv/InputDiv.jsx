@@ -1,6 +1,14 @@
 import React from "react"
 
-const InputDiv = ({ title, type, name, onChange, value }) => {
+const InputDiv = ({
+  title,
+  type,
+  name,
+  onChange,
+  value,
+  min = "1",
+  max = "100",
+}) => {
   return (
     <div>
       <p>{title}</p>
@@ -9,8 +17,8 @@ const InputDiv = ({ title, type, name, onChange, value }) => {
         name={name}
         onChange={onChange}
         value={value}
-        min='1'
-        max='100'
+        min={min}
+        max={max}
       />
     </div>
   )

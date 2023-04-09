@@ -1,6 +1,5 @@
 const { Router } = require("express")
 const { Types } = require("mongoose")
-const { check, validationResult } = require("express-validator")
 const authMw = require("../middleware/auth.middleware")
 const Object = require("../models/Object")
 const User = require("../models/User")
@@ -33,24 +32,48 @@ router.post("/", async (req, res) => {
 
 router.get("/:id", authMw, async (req, res) => {
   try {
-    const posts = await Post.find({ author: req.user.userId })
-    res.json(posts)
+    if (req.params.id === "all") {
+      const objects = await Object.find()
+      return res.status(201).json(objects)
+    }
+    const object = await Object.findById(req.params.id)
+    res.status(201).json(object)
   } catch (e) {
     res
       .status(500)
-      .json({ message: "Something went wrong while getting posts" })
+      .json({ message: "Something went wrong while getting object" })
   }
 })
 
 router.get("/", authMw, async (req, res) => {
   try {
-    console.log(req.user.userId)
     const objects = await Object.find({
       "workProcess.workGroup": Types.ObjectId(req.user.userId),
     })
-
-    console.log(objects)
     res.json(objects)
+  } catch (e) {
+    res
+      .status(500)
+      .json({ message: "Something went wrong while getting objects" })
+  }
+})
+
+router.post("/update", authMw, async (req, res) => {
+  try {
+    const { _id, workProcess } = req.body.object
+    const { workGroup } = workProcess
+    await Object.findOneAndUpdate({ _id }, req.body.object)
+
+    workGroup.forEach(async (workerId) => {
+      const worker = await User.findById(workerId)
+      if (!worker.objects.includes(_id)) {
+        await User.findByIdAndUpdate(workerId, {
+          objects: [...worker.objects, _id],
+        })
+      }
+    })
+
+    return res.json({ message: "Edited" })
   } catch (e) {
     res
       .status(500)
@@ -60,31 +83,8 @@ router.get("/", authMw, async (req, res) => {
 
 router.delete("/:id", authMw, async (req, res) => {
   try {
-    const foundPost = await Post.findOneAndDelete({ _id: req.params.id })
-    res.json({ message: `Post ${req.params.id} deleted` })
-
-    const author = await User.findOne({ _id: foundPost.author })
-    const newAuthorPosts = author.posts.filter(
-      (post) => post._id.toString() !== foundPost._id.toString()
-    )
-    await User.findByIdAndUpdate(
-      { _id: foundPost.author },
-      { posts: newAuthorPosts }
-    )
-
-    const posts = await Post.find({ imageUrl: { $ne: "" } })
-
-    if (foundPost.imageUrl) {
-      for (const post of posts) {
-        if (foundPost.imageUrl === post.imageUrl) {
-          return
-        }
-      }
-      fs.unlink(`./${foundPost.imageUrl}`, (e) => {
-        console.log("deleting image", foundPost.imageUrl)
-        if (e) console.log(e)
-      })
-    }
+    await Object.findOneAndDelete({ _id: req.params.id })
+    return res.json({ message: `Object ${req.params.id} deleted` })
   } catch (e) {
     res
       .status(500)

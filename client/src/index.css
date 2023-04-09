@@ -5,3 +5,33 @@ body {
 iframe {
   pointer-events: none;
 }
+
+#blue {
+  background: -webkit-linear-gradient(
+    45deg,
+    rgb(37, 0, 255),
+    rgb(174, 191, 255)
+  );
+  background: -moz-linear-gradient(45deg, rgb(37, 0, 255), rgb(174, 191, 255));
+  background: linear-gradient(45deg, rgb(37, 0, 255), rgb(174, 191, 255));
+}
+
+#red {
+  background: -webkit-linear-gradient(
+    45deg,
+    rgb(255, 0, 0),
+    rgb(255, 159, 159)
+  );
+  background: -moz-linear-gradient(45deg, rgb(255, 0, 0), rgb(255, 159, 159));
+  background: linear-gradient(45deg, rgb(255, 0, 0), rgb(255, 159, 159));
+}
+
+#green {
+  background: -webkit-linear-gradient(
+    45deg,
+    rgb(71, 255, 0),
+    rgb(174, 255, 241)
+  );
+  background: -moz-linear-gradient(45deg, rgb(71, 255, 0), rgb(174, 255, 241));
+  background: linear-gradient(45deg, rgb(71, 255, 0), rgb(174, 255, 241));
+}

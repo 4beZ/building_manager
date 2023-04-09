@@ -1,32 +1,41 @@
-import { useContext } from "react"
+import { useContext, useState, useEffect, useCallback } from "react"
 import styles from "./SingleObjectPage.module.scss"
 import { useParams } from "react-router-dom"
 import { AiOutlineCamera } from "react-icons/ai"
 import InfoDiv from "../InfoDiv/InfoDiv"
-import { testObject, testWorkProcess } from "../../testObject/testObject"
 import { Context } from "../../context/Context"
+import { useHttp } from "../../hooks/http.hook"
 
 const SingleObjectPage = () => {
   const { id } = useParams()
   const { isAdmin } = useContext(Context)
+  const [object, setobject] = useState({})
+  const [workProcess, setworkProcess] = useState({})
+  const [workGroup, setworkGroup] = useState([])
+  const { loading, request } = useHttp()
 
-  const { imageUrl, name, country, district, address, square, type, owner } =
-    testObject
-  const {
-    problemType,
-    solutionType,
-    dateAppear,
-    solutionTerm,
-    solutionDateNominal,
-    solutionDateFact,
-    workGroup,
-  } = testWorkProcess
+  const getObject = useCallback(async () => {
+    try {
+      const data = await request(`/api/objects/${id}`)
+      setworkProcess(data.workProcess)
+      setworkGroup(data.workProcess.workGroup)
+      setobject(data)
+    } catch (e) {
+      alert(e.message)
+    }
+  }, [request])
 
-  return (
+  useEffect(() => {
+    getObject()
+  }, [getObject])
+
+  return loading ? (
+    <p>loading</p>
+  ) : (
     <div className={styles.main}>
       <div>
-        <b>{name}</b>
-        <div>{imageUrl ? <p>Image</p> : <AiOutlineCamera />}</div>
+        <b>{object.name}</b>
+        <div>{object.imageUrl ? <p>Image</p> : <AiOutlineCamera />}</div>
         <b>Workers</b>
         <div className={styles.workersDiv}>
           {workGroup.length > 0 ? (
@@ -39,19 +48,28 @@ const SingleObjectPage = () => {
       <div>
         <b>Information</b>
         <>
-          <InfoDiv title='Country' value={country} />
-          <InfoDiv title='District' value={district} />
-          <InfoDiv title='Address' value={address} />
-          <InfoDiv title='Square' value={square} />
+          <InfoDiv title='Country' value={object.country} />
+          <InfoDiv title='District' value={object.district} />
+          <InfoDiv title='Address' value={object.address} />
+          <InfoDiv title='Square' value={object.square} />
         </>
         <b>Work Process</b>
         <>
-          <InfoDiv title='Problem Type' value={problemType} />
-          <InfoDiv title='Solution Type' value={solutionType} />
-          <InfoDiv title='Solution Term (days)' value={solutionTerm} />
-          <InfoDiv title='Appear Date' value={dateAppear} />
-          <InfoDiv title='Nominal Solution Date' value={solutionDateNominal} />
-          <InfoDiv title='Fact Solution Date' value={solutionDateFact} />
+          <InfoDiv title='Problem Type' value={workProcess.problemType} />
+          <InfoDiv title='Solution Type' value={workProcess.solutionType} />
+          <InfoDiv
+            title='Solution Term (days)'
+            value={workProcess.solutionTerm}
+          />
+          <InfoDiv title='Appear Date' value={workProcess.dateAppear} />
+          <InfoDiv
+            title='Nominal Solution Date'
+            value={workProcess.solutionDateNominal}
+          />
+          <InfoDiv
+            title='Fact Solution Date'
+            value={workProcess.solutionDateFact}
+          />
         </>
         {isAdmin && (
           <div className={styles.editButton}>

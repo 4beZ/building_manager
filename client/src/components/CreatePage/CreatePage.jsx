@@ -1,9 +1,10 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import styles from "./CreatePage.module.scss"
 import { AiOutlineCamera } from "react-icons/ai"
 import { MdOutlineClose } from "react-icons/md"
 import InputDiv from "../InputDiv/InputDiv"
 import { useHttp } from "../../hooks/http.hook"
+import { Link } from "react-router-dom"
 
 const CreatePage = ({
   initialObject = {
@@ -15,6 +16,7 @@ const CreatePage = ({
     square: "",
     type: "",
     owner: "",
+    state: 0,
   },
   initialWorkProcess = {
     problemType: "",
@@ -25,14 +27,18 @@ const CreatePage = ({
     solutionDateFact: "",
     workGroup: [],
   },
-  apiUrl = "",
+  initialWorkGroup = [],
+  apiUrl = `api/objects`,
   title = "Create",
   edit = false,
 }) => {
   const { loading, error, request, clearError } = useHttp()
   const [objectForm, setobjectForm] = useState(initialObject)
   const [workProcess, setworkProcess] = useState(initialWorkProcess)
+  const [workGroup, setworkGroup] = useState(initialWorkGroup)
   const [worker, setworker] = useState("")
+
+  const goToRoot = useRef(null)
 
   const handleObjectFormChange = (e) => {
     setobjectForm({ ...objectForm, [e.target.name]: e.target.value })
@@ -49,6 +55,7 @@ const CreatePage = ({
         ...workProcess,
         workGroup: [...workProcess.workGroup, userId],
       })
+      setworkGroup([...workGroup, userId])
       setworker("")
     } catch (e) {}
   }
@@ -58,15 +65,47 @@ const CreatePage = ({
       ...workProcess,
       workGroup: workProcess.workGroup.filter((w) => w !== worker),
     })
+    setworkGroup(workGroup.filter((w) => w !== worker))
   }
 
   const commitObject = async () => {
     try {
-      const data = await request(`api/objects`, "POST", {
-        object: { ...objectForm, workProcess: workProcess },
-      })
-      console.log(data)
+      const { result, message } = checkValid()
+      if (!result) {
+        alert(message)
+        return
+      }
+      if (edit) {
+        await request("../api/objects/update", "POST", {
+          object: { ...objectForm, workProcess: workProcess },
+        })
+      } else {
+        await request(apiUrl, "POST", {
+          object: { ...objectForm, workProcess: workProcess },
+        })
+      }
+      goToRoot.current.click()
     } catch (e) {}
+  }
+
+  const deleteObject = async () => {
+    try {
+      await request(`../api/objects/${objectForm._id}`, "DELETE")
+      goToRoot.current.click()
+    } catch (e) {}
+  }
+
+  const checkValid = () => {
+    if (objectForm.state > 2 || objectForm.state < 0) {
+      return { result: false, message: "Wrong state" }
+    }
+    if (workGroup.length == 0) {
+      return { result: false, message: "No workers" }
+    }
+    if (!objectForm.name) {
+      return { result: false, message: "No name" }
+    }
+    return { result: true }
   }
 
   return (
@@ -78,8 +117,8 @@ const CreatePage = ({
         </div>
         <b>Workers</b>
         <div className={styles.workersDiv}>
-          {workProcess.workGroup.length > 0 ? (
-            workProcess.workGroup.map((worker, i) => (
+          {workGroup.length > 0 ? (
+            workGroup.map((worker, i) => (
               <p key={i}>
                 {worker}
                 <MdOutlineClose
@@ -98,7 +137,7 @@ const CreatePage = ({
         </div>
         {edit && (
           <div className={styles.deleteButton}>
-            <button>Delete</button>
+            <button onClick={deleteObject}>Delete</button>
           </div>
         )}
       </div>
@@ -147,6 +186,15 @@ const CreatePage = ({
             onChange={handleObjectFormChange}
             value={objectForm.owner}
           />
+          <InputDiv
+            title='State'
+            type='number'
+            name='state'
+            min='0'
+            max='2'
+            onChange={handleObjectFormChange}
+            value={objectForm.state}
+          />
         </>
         <b>Work Process</b>
         <>
@@ -156,13 +204,6 @@ const CreatePage = ({
             name='problemType'
             onChange={handleWorkFormChange}
             value={workProcess.problemType}
-          />
-          <InputDiv
-            title='Solution Type'
-            type='text'
-            name='solutionType'
-            onChange={handleWorkFormChange}
-            value={workProcess.solutionType}
           />
           <InputDiv
             title='Solution Term (days)'
@@ -205,6 +246,7 @@ const CreatePage = ({
           <button onClick={addWorker}>Add</button>
         </div>
       </div>
+      <Link to='/' ref={goToRoot} />
     </div>
   )
 }

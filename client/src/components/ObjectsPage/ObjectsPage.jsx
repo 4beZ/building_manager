@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useCallback } from "react"
+import React, { useState, useEffect, useCallback, useContext } from "react"
 import styles from "./ObjectsPage.module.scss"
 import { useHttp } from "../../hooks/http.hook"
-import Object from "../Object/Object"
+import Object from "../Object/ObjectOne"
 import { VscListSelection } from "react-icons/vsc"
+import { Context } from "../../context/Context"
 
 const ObjectsPage = () => {
+  const { isAdmin } = useContext(Context)
   const [searchValue, setsearchValue] = useState("")
   const [objects, setobjects] = useState([])
   const [sortWindow, setsortWindow] = useState(false)
@@ -16,9 +18,13 @@ const ObjectsPage = () => {
 
   const getObjects = useCallback(async () => {
     try {
-      const data = await request("/api/objects")
-      console.log(data)
-      setobjects(data)
+      if (isAdmin) {
+        const data = await request("/api/objects/all")
+        setobjects(data)
+      } else {
+        const data = await request("/api/objects")
+        setobjects(data)
+      }
     } catch (e) {
       console.error(e)
     }
@@ -53,13 +59,11 @@ const ObjectsPage = () => {
               </div>
             )}
           </div>
-          <Object />
-          {/* {objects
+          {objects
             .filter((obj) => obj.name.toLowerCase().includes(searchValue))
             .map((object) => (
               <Object object={object} key={object._id} />
-              // <p>{object.name}</p>
-            ))} */}
+            ))}
         </div>
       )}
     </>
