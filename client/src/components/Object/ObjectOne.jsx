@@ -4,6 +4,7 @@ import houseImage from "../../images/house.jpg"
 import { TbListDetails, TbBallpen } from "react-icons/tb"
 import { Link } from "react-router-dom"
 import { Context } from "../../context/Context"
+import { serverUrl } from "../../config"
 
 const ObjectOne = ({
   object: {
@@ -34,7 +35,11 @@ const ObjectOne = ({
   return (
     <div className={styles.object}>
       <div className={styles.image}>
-        <img src={houseImage} alt='objectImage' />
+        {imageUrl ? (
+          <img src={`${serverUrl}${imageUrl}`} alt='objectImage' />
+        ) : (
+          <img src={houseImage} alt='objectImage' />
+        )}
       </div>
       <div className={styles.info}>
         <p>{name}</p>

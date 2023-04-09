@@ -10,6 +10,7 @@ const ObjectsPage = () => {
   const [searchValue, setsearchValue] = useState("")
   const [objects, setobjects] = useState([])
   const [sortWindow, setsortWindow] = useState(false)
+  const [sortByState, setsortByState] = useState(null)
   const { loading, request } = useHttp()
 
   const toggleSortWindow = () => {
@@ -20,10 +21,10 @@ const ObjectsPage = () => {
     try {
       if (isAdmin) {
         const data = await request("/api/objects/all")
-        setobjects(data)
+        setobjects(data.reverse())
       } else {
         const data = await request("/api/objects")
-        setobjects(data)
+        setobjects(data.reverse())
       }
     } catch (e) {
       console.error(e)
@@ -33,6 +34,11 @@ const ObjectsPage = () => {
   useEffect(() => {
     getObjects()
   }, [getObjects])
+
+  const changeSortState = (state) => {
+    setsortByState(state)
+    setsortWindow(false)
+  }
 
   return (
     <>
@@ -53,14 +59,19 @@ const ObjectsPage = () => {
             </div>
             {sortWindow && (
               <div className={styles.sort}>
-                <div>1</div>
-                <div>2</div>
-                <div>3</div>
+                <div id='red' onClick={() => changeSortState(0)}></div>
+                <div id='blue' onClick={() => changeSortState(1)}></div>
+                <div id='green' onClick={() => changeSortState(2)}></div>
+                <div onClick={() => changeSortState(null)}>Show All</div>
               </div>
             )}
           </div>
           {objects
             .filter((obj) => obj.name.toLowerCase().includes(searchValue))
+            .filter((obj) => {
+              if (sortByState == null) return true
+              return obj.state == sortByState
+            })
             .map((object) => (
               <Object object={object} key={object._id} />
             ))}

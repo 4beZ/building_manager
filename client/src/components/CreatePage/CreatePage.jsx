@@ -1,10 +1,11 @@
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect } from "react"
 import styles from "./CreatePage.module.scss"
 import { AiOutlineCamera } from "react-icons/ai"
 import { MdOutlineClose } from "react-icons/md"
 import InputDiv from "../InputDiv/InputDiv"
 import { useHttp } from "../../hooks/http.hook"
 import { Link } from "react-router-dom"
+import { serverUrl } from "../../config"
 
 const CreatePage = ({
   initialObject = {
@@ -37,8 +38,10 @@ const CreatePage = ({
   const [workProcess, setworkProcess] = useState(initialWorkProcess)
   const [workGroup, setworkGroup] = useState(initialWorkGroup)
   const [worker, setworker] = useState("")
+  const [imageUrl, setimageUrl] = useState(initialObject.imageUrl)
 
   const goToRoot = useRef(null)
+  const inputFileRef = useRef(null)
 
   const handleObjectFormChange = (e) => {
     setobjectForm({ ...objectForm, [e.target.name]: e.target.value })
@@ -50,22 +53,24 @@ const CreatePage = ({
 
   const addWorker = async () => {
     try {
-      const { userId } = await request(`api/users/${worker}`)
+      const { userId, login } = await request(`api/users/${worker}`)
       setworkProcess({
         ...workProcess,
         workGroup: [...workProcess.workGroup, userId],
       })
-      setworkGroup([...workGroup, userId])
+      setworkGroup([...workGroup, { userId, login }])
       setworker("")
-    } catch (e) {}
+    } catch (e) {
+      alert(e.message)
+    }
   }
 
-  const removeWorker = (worker) => {
+  const removeWorker = (workerId) => {
     setworkProcess({
       ...workProcess,
-      workGroup: workProcess.workGroup.filter((w) => w !== worker),
+      workGroup: workProcess.workGroup.filter((w) => w !== workerId),
     })
-    setworkGroup(workGroup.filter((w) => w !== worker))
+    setworkGroup(workGroup.filter((w) => w.userId !== workerId))
   }
 
   const commitObject = async () => {
@@ -77,11 +82,11 @@ const CreatePage = ({
       }
       if (edit) {
         await request("../api/objects/update", "POST", {
-          object: { ...objectForm, workProcess: workProcess },
+          object: { ...objectForm, imageUrl, workProcess: workProcess },
         })
       } else {
         await request(apiUrl, "POST", {
-          object: { ...objectForm, workProcess: workProcess },
+          object: { ...objectForm, imageUrl, workProcess: workProcess },
         })
       }
       goToRoot.current.click()
@@ -105,25 +110,61 @@ const CreatePage = ({
     if (!objectForm.name) {
       return { result: false, message: "No name" }
     }
+    if (!workProcess.problemType) {
+      return { result: false, message: "No problem to solve" }
+    }
+    if (!objectForm.address) {
+      return { result: false, message: "No address" }
+    }
+    if (!objectForm.country) {
+      return { result: false, message: "No country" }
+    }
+
     return { result: true }
   }
+
+  const fileChangeHandler = async (e) => {
+    try {
+      const formData = new FormData()
+      const file = e.target.files[0]
+      formData.append("image", file)
+
+      const data = await request("/upload", "POST", formData, {}, true)
+      console.log("Image url: " + data.url)
+      setimageUrl(data.url)
+    } catch (error) {
+      console.error("Getting url error " + error)
+    }
+  }
+
+  useEffect(() => {}, [])
 
   return (
     <div className={styles.main}>
       <div>
         <b>{title}</b>
-        <div>
-          {objectForm.imageUrl ? <p>There is an image</p> : <AiOutlineCamera />}
+        <div onClick={() => inputFileRef.current.click()}>
+          {imageUrl ? (
+            <img src={`${serverUrl}${imageUrl}`} alt='ObjectImage' />
+          ) : (
+            <AiOutlineCamera />
+          )}
+          <input
+            ref={inputFileRef}
+            type='file'
+            hidden
+            onChangeCapture={fileChangeHandler}
+          />
         </div>
         <b>Workers</b>
         <div className={styles.workersDiv}>
           {workGroup.length > 0 ? (
             workGroup.map((worker, i) => (
               <p key={i}>
-                {worker}
+                {!edit ? worker.login : worker}
                 <MdOutlineClose
                   className={styles.removeIcon}
-                  onClick={() => removeWorker(worker)}
+                  onClick={() => removeWorker(worker.userId)}
                 />
               </p>
             ))

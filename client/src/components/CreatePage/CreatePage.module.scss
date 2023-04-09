@@ -65,6 +65,11 @@
           background-color: rgba(0, 0, 0, 0.757);
           transition: all 200ms ease;
         }
+
+        img {
+          max-width: 90%;
+          max-height: 90%;
+        }
       }
 
       p {

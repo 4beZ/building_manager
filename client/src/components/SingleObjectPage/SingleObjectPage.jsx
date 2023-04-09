@@ -1,10 +1,11 @@
-import { useContext, useState, useEffect, useCallback } from "react"
+import { useContext, useState, useEffect, useCallback, useRef } from "react"
 import styles from "./SingleObjectPage.module.scss"
-import { useParams } from "react-router-dom"
+import { useParams, Link } from "react-router-dom"
 import { AiOutlineCamera } from "react-icons/ai"
 import InfoDiv from "../InfoDiv/InfoDiv"
 import { Context } from "../../context/Context"
 import { useHttp } from "../../hooks/http.hook"
+import { serverUrl } from "../../config"
 
 const SingleObjectPage = () => {
   const { id } = useParams()
@@ -13,6 +14,8 @@ const SingleObjectPage = () => {
   const [workProcess, setworkProcess] = useState({})
   const [workGroup, setworkGroup] = useState([])
   const { loading, request } = useHttp()
+
+  const goToEdit = useRef(null)
 
   const getObject = useCallback(async () => {
     try {
@@ -35,7 +38,13 @@ const SingleObjectPage = () => {
     <div className={styles.main}>
       <div>
         <b>{object.name}</b>
-        <div>{object.imageUrl ? <p>Image</p> : <AiOutlineCamera />}</div>
+        <div>
+          {object.imageUrl ? (
+            <img src={`${serverUrl}${object.imageUrl}`} alt='ObjectImage' />
+          ) : (
+            <AiOutlineCamera />
+          )}
+        </div>
         <b>Workers</b>
         <div className={styles.workersDiv}>
           {workGroup.length > 0 ? (
@@ -73,9 +82,10 @@ const SingleObjectPage = () => {
         </>
         {isAdmin && (
           <div className={styles.editButton}>
-            <button>Edit</button>
+            <button onClick={() => goToEdit.current.click()}>Edit</button>
           </div>
         )}
+        <Link to={`/edit/${object._id}`} hidden ref={goToEdit} />
       </div>
     </div>
   )
